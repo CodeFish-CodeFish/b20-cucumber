@@ -9,25 +9,27 @@ import java.time.Duration;
 
 public class DriverUtils {
 
+    static WebDriver driver;
+
     public static WebDriver getDriver(String browserName) {
 
-        WebDriver driver;
-        switch (browserName) {
-            case "chrome":
-                WebDriverManager.chromedriver().setup();
-                driver = new ChromeDriver();
-                break;
-            case "firefox":
-                WebDriverManager.firefoxdriver().setup();
-                driver = new FirefoxDriver();
-                break;
-            default:
-                WebDriverManager.chromedriver().setup();
-                driver = new ChromeDriver();
+        if (driver == null) {
+            switch (browserName) {
+                case "chrome":
+                    WebDriverManager.chromedriver().setup();
+                    driver = new ChromeDriver();
+                    break;
+                case "firefox":
+                    WebDriverManager.firefoxdriver().setup();
+                    driver = new FirefoxDriver();
+                    break;
+                default:
+                    WebDriverManager.chromedriver().setup();
+                    driver = new ChromeDriver();
+            }
+            driver.manage().window().maximize();
+            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
         }
-        driver.manage().window().maximize();
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-
         return driver;
     }
 

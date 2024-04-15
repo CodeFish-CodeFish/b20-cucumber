@@ -1,5 +1,6 @@
 Feature: Tumblr login
 
+  @smokeTest @regression @success @temirlan
   Scenario Outline: Invalid login
     Given I am on Tumblr home page
     When I click login button

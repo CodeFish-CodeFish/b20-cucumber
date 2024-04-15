@@ -6,15 +6,19 @@ import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import pages.HerokuappWindowsPage;
 import utils.ConfigUtils;
 import utils.DriverUtils;
 
 import java.util.List;
+import java.util.Set;
 
 public class HerokuappStepDefs {
 
     WebDriver driver;
     String headerText;
+
+    HerokuappWindowsPage windowsPage;
 
     @When("I navigate to home page")
     public void i_navigate_to_home_page() {
@@ -46,5 +50,35 @@ public class HerokuappStepDefs {
         Assert.assertEquals("Checkboxes", header.getText());
     }
 
+
+    @When("I navigate to windows page")
+    public void i_navigate_to_windows_page() {
+        String url = ConfigUtils.getConfigProp("herokuapp_windows");
+        driver = DriverUtils.getDriver("chrome");
+        driver.get(url);
+    }
+
+    @When("I click link")
+    public void i_click_link() {
+        windowsPage = new HerokuappWindowsPage(driver);
+        windowsPage.clickHereLink.click();
+    }
+
+    @Then("new tab should open")
+    public void new_tab_should_open() {
+        Set<String> windowHandles = driver.getWindowHandles();
+        Assert.assertTrue(windowHandles.size() > 1);
+    }
+
+    @When("I close new tab")
+    public void i_close_new_tab() {
+        driver.close();
+    }
+
+    @Then("I should have {int} tab remaining")
+    public void i_should_have_tab_remaining(Integer int1) {
+        Set<String> handles = driver.getWindowHandles();
+        Assert.assertTrue(handles.size() == 1);
+    }
 
 }
